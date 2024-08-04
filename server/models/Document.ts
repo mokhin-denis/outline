@@ -988,6 +988,9 @@ class Document extends ParanoidModel<
     this.collectionId = collectionId;
     await this.save({ transaction });
     await this.reload({ transaction });
+    if (this.collection && collection) {
+      this.collection.documentStructure = collection.documentStructure;
+    }
     return this;
   };
 
