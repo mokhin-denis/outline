@@ -12,6 +12,7 @@ import type CollectionsStore from "~/stores/CollectionsStore";
 import Document from "~/models/Document";
 import ParanoidModel from "~/models/base/ParanoidModel";
 import { client } from "~/utils/ApiClient";
+import User from "./User";
 import Field from "./decorators/Field";
 import { AfterChange } from "./decorators/Lifecycle";
 
@@ -98,6 +99,18 @@ export default class Collection extends ParanoidModel {
   @observable
   urlId: string;
 
+  /**
+   * The date and time the collection was archived.
+   */
+  @observable
+  archivedAt: string;
+
+  /**
+   * User who archived the collection.
+   */
+  @observable
+  archivedBy?: User;
+
   constructor(fields: Partial<Collection>, store: CollectionsStore) {
     super(fields, store);
 
@@ -111,6 +124,21 @@ export default class Collection extends ParanoidModel {
 
     reaction(() => this.permission, resetDocumentPolicies);
     reaction(() => this.sharing, resetDocumentPolicies);
+  }
+
+  @computed
+  get isArchived() {
+    return !!this.archivedAt;
+  }
+
+  @computed
+  get isDeleted() {
+    return !!this.deletedAt;
+  }
+
+  @computed
+  get isActive() {
+    return !this.isArchived && !this.isDeleted;
   }
 
   @computed

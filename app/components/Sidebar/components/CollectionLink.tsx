@@ -31,6 +31,8 @@ type Props = {
   onDisclosureClick: (ev?: React.MouseEvent<HTMLButtonElement>) => void;
   activeDocument: Document | undefined;
   isDraggingAnyCollection?: boolean;
+  depth?: number;
+  onClick?: () => void;
 };
 
 const CollectionLink: React.FC<Props> = ({
@@ -38,6 +40,8 @@ const CollectionLink: React.FC<Props> = ({
   expanded,
   onDisclosureClick,
   isDraggingAnyCollection,
+  depth,
+  onClick,
 }: Props) => {
   const itemRef = React.useRef<
     NavigationNode & { depth: number; active: boolean; collectionId: string }
@@ -134,6 +138,7 @@ const CollectionLink: React.FC<Props> = ({
       <Relative ref={drop}>
         <DropToImport collectionId={collection.id}>
           <SidebarLink
+            onClick={onClick}
             to={{
               pathname: collection.path,
               state: { starred: inStarredSection },
@@ -160,7 +165,7 @@ const CollectionLink: React.FC<Props> = ({
               />
             }
             exact={false}
-            depth={0}
+            depth={depth ? depth : 0}
             menu={
               !isEditing &&
               !isDraggingAnyCollection && (
