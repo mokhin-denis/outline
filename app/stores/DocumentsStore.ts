@@ -123,6 +123,16 @@ export default class DocumentsStore extends Store<Document> {
     );
   }
 
+  archivedInCollection(collectionId: string): Document[] {
+    return filter(
+      this.orderedData,
+      (document) =>
+        document.collectionId === collectionId &&
+        document.isArchived &&
+        !document.isDeleted
+    );
+  }
+
   templatesInCollection(collectionId: string): Document[] {
     return orderBy(
       filter(
