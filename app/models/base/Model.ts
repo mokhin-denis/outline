@@ -37,7 +37,9 @@ export default abstract class Model {
    *
    * @returns A promise that resolves when loading is complete.
    */
-  async loadRelations(): Promise<any> {
+  async loadRelations(
+    options: { withoutPolicies?: boolean } = {}
+  ): Promise<any> {
     const relations = getRelationsForModelClass(
       this.constructor as typeof Model
     );
@@ -61,7 +63,7 @@ export default abstract class Model {
     }
 
     const policy = this.store.rootStore.policies.get(this.id);
-    if (!policy) {
+    if (!policy && !options.withoutPolicies) {
       promises.push(this.store.fetch(this.id, { force: true }));
     }
 

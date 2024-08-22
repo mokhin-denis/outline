@@ -69,7 +69,7 @@ const DocumentBreadcrumb: React.FC<Props> = ({
     : undefined;
 
   React.useEffect(() => {
-    void document.loadRelations();
+    void document.loadRelations({ withoutPolicies: true });
   }, [document]);
 
   let collectionNode: MenuInternalLink | undefined;
