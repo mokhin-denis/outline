@@ -15,6 +15,10 @@ import UserMembership from "./models/UserMembership";
 
 export type PartialWithId<T> = Partial<T> & { id: string };
 
+export type PartialWithArchivedAt<T> = PartialWithId<T> & {
+  archivedAt?: string | null;
+};
+
 export type MenuItemButton = {
   type: "button";
   title: React.ReactNode;
